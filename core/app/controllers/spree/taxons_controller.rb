@@ -14,7 +14,11 @@ module Spree
       @searcher.current_currency = current_currency
       @products = @searcher.retrieve_products
 
-      respond_with(@taxon)
+      begin
+        render "#{@current_store.code}/taxons/#{@taxon.name.to_url}", layout: false
+      rescue
+        respond_with(@taxon)
+      end
     end
 
     private
