@@ -647,7 +647,7 @@ en:
   order_not_in_system: That order number is not valid on this site.
   order_number: Order
   order_operation_authorize: Authorize
-  order_processed_but_following_items_are_out_of_stock: "Your order has been processed, but following items are out of stock:"
+  order_processed_but_following_items_are_out_of_stock: ""
   order_processed_successfully: "Your order has been processed successfully"
   order_state:
     # keys correspond to Checkout state names:
@@ -670,7 +670,7 @@ en:
   order_updated: "Order Updated"
   orders: Orders
   other_payment_options: Other Payment Options
-  out_of_stock: "Out of Stock"
+  out_of_stock: ""
   over_paid: "Over Paid"
   overview: Overview
   page_only_viewable_when_logged_in: You attempted to visit a page which can only be viewed when you are logged in
