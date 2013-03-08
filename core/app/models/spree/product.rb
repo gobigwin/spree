@@ -24,7 +24,8 @@ module Spree
     has_many :product_properties, :dependent => :destroy
     has_many :properties, :through => :product_properties
 
-    has_and_belongs_to_many :taxons, :join_table => 'spree_products_taxons'
+    has_many :classifications, :dependent => :delete_all
+    has_many :taxons, :through => :classifications
 
     belongs_to :tax_category
     belongs_to :shipping_category
@@ -128,6 +129,10 @@ module Spree
       raise 'cannot set on_demand of product with variants' if has_variants? && Spree::Config[:track_inventory_levels]
       master.on_demand = on_demand
       self[:on_demand] = new_on_demand
+    end
+
+    def count_on_hand=(value)
+      raise I18n.t('exceptions.count_on_hand_setter')
     end
 
     # Returns true if there are inventory units (any variant) with "on_hand" state for this product
@@ -263,9 +268,12 @@ module Spree
       end
 
       def recalculate_count_on_hand
-        product_count_on_hand = has_variants? ?
-          variants.sum(:count_on_hand) : (master ? master.count_on_hand : 0)
-        self.count_on_hand = product_count_on_hand
+        value = if has_variants?
+          variants.sum(:count_on_hand)
+        else
+          (master ? master.count_on_hand : 0)
+        end
+        self[:count_on_hand] = value
       end
 
       # the master on_hand is meaningless once a product has variants as the inventory

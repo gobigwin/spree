@@ -441,6 +441,8 @@ en:
       user:
         signup: 'User signup'
       page_view: "Static page viewed"
+  exceptions:
+    count_on_hand_setter: "Cannot set count_on_hand manually, as it is set automatically by the recalculate_count_on_hand callback. Please use `update_column(:count_on_hand, value)` instead."
   existing_customer: "Existing Customer"
   expiration: "Expiration"
   expiration_month: "Expiration Month"
@@ -595,6 +597,12 @@ en:
   no_match_found: "No Match Found"
   no_products_found: "No products found"
   no_results: "No results"
+  no_promotions_found: "No promotions found"
+  no_payment_methods_found: "No payment methods found"
+  no_results: "No results"
+  no_shipments_for_this_order: "There are no shipments for this order"
+  no_shipping_methods_found: "No shipping methods found"
+  no_trackers_found: "No Trackers Found"
   no_user_found: "No user was found with that email address"
   none: None
   none_available: "None Available"
@@ -1108,7 +1116,6 @@ en:
   welcome_to_sample_store: "Welcome to the sample store"
   what_is_a_cvv: "What is a (CVV) Credit Card Code?"
   what_is_this: "What's This?"
-  whats_this: "What's this"
   width: Width
   year: "Year"
   you_have_been_logged_out: "You have been logged out."

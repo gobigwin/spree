@@ -10,6 +10,14 @@ describe Spree::Product do
     end
   end
 
+  context "#count_on_hand=" do
+    it "cannot be set manually" do
+      product = Spree::Product.new
+      setter = lambda { product.count_on_hand = 5 }
+      setter.should raise_error(I18n.t('exceptions.count_on_hand_setter'))
+    end
+  end
+
   it "should always have a master variant" do
     product = Spree::Product.new
     product.master.should_not be_nil
@@ -109,7 +117,7 @@ describe Spree::Product do
         before { Spree::Config[:display_currency] = true }
 
         it "shows the currency" do
-          product.display_price.should == "$10.55 USD"
+          product.display_price.to_s.should == "$10.55 USD"
         end
       end
 
@@ -117,7 +125,7 @@ describe Spree::Product do
         before { Spree::Config[:display_currency] = false }
 
         it "does not include the currency" do
-          product.display_price.should == "$10.55"
+          product.display_price.to_s.should == "$10.55"
         end
       end
 
@@ -422,7 +430,19 @@ describe Spree::Product do
     it "should be sorted by position" do
       product.images.pluck(:alt).should eq(["position 1", "position 2"])
     end
+  end
 
+  # Regression tests for #2352
+  context "classifications and taxons" do
+    it "is joined through classifications" do
+      reflection = Spree::Product.reflect_on_association(:taxons)
+      reflection.options[:through] = :classifications
+    end
+
+    it "will delete all classifications" do
+      reflection = Spree::Product.reflect_on_association(:classifications)
+      reflection.options[:dependent] = :delete_all
+    end
   end
 
 end
