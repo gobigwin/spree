@@ -8,7 +8,7 @@ module Spree
         if params[:ids]
           @taxons = Spree::Taxon.where(:id => params[:ids].split(','))
         else
-          @taxons = Spree::Taxon.limit(20).search(:name_cont => params[:q]).result
+          @taxons = Spree::Taxon.search(:name_cont => params[:q]).result
         end
       end
 
