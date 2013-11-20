@@ -3,10 +3,10 @@ module Spree
     helper 'spree/base'
 
     def shipped_email(shipment, resend = false)
-      @shipment = shipment
+      @shipment = shipment.is_a?(Spree::Shipment) ? shipment : Spree::Shipment.find(shipment)
       subject = (resend ? "[#{t(:resend).upcase}] " : '')
-      subject += "#{Spree::Config[:site_name]} #{t('shipment_mailer.shipped_email.subject')} ##{shipment.order.number}"
-      mail(:to => shipment.order.email,
+      subject += "#{Spree::Config[:site_name]} #{t('shipment_mailer.shipped_email.subject')} ##{@shipment.order.number}"
+      mail(:to => @shipment.order.email,
            :subject => subject)
     end
   end
