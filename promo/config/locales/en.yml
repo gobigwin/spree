@@ -72,6 +72,9 @@ en:
   promotions_description: Manage offers and coupons with promotions
   promotion_rule: Promotion Rule
   promotion_rule_types:
+    current_store:
+      name: Current Store
+      description: Only valid for this store
     first_order:
       name: First order
       description: "Must be the customer's first order"

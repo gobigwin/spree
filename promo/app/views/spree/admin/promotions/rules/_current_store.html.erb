@@ -1,0 +1,3 @@
+<div class="field alpha four columns">
+  <%= collection_select "#{param_prefix}", :preferred_store_id, Spree::Store.all, :id, :name, { selected: promotion_rule.preferred_store_id } %>
+</div>
