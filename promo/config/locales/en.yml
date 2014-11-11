@@ -72,6 +72,9 @@ en:
   promotions_description: Manage offers and coupons with promotions
   promotion_rule: Promotion Rule
   promotion_rule_types:
+    product_exclusion:
+      name: Product Exclusion(s)
+      description: "Order does not include specified product(s)"
     current_store:
       name: Current Store
       description: Only valid for this store
