@@ -10,7 +10,7 @@ module Spree
 
         def eligible?(order, options = {})
           return true if eligible_products.empty?
-          return false if order.products.any? {|p| eligible_products.include?(p) }
+          !order.products.any? {|p| eligible_products.include?(p) }
         end
         
         def product_ids_string
