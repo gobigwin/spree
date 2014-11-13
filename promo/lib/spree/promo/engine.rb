@@ -44,7 +44,8 @@ module Spree
           Spree::Promotion::Rules::User,
           Spree::Promotion::Rules::FirstOrder,
           Spree::Promotion::Rules::UserLoggedIn,
-          Spree::Promotion::Rules::CurrentStore]
+          Spree::Promotion::Rules::CurrentStore,
+          Spree::Promotion::Rules::ProductExclusion]
       end
 
       initializer 'spree.promo.register.promotions.actions' do |app|

@@ -21,6 +21,15 @@ module Spree
           }).result.limit(10)
         end
       end
+
+      def products
+        if params[:ids]
+          @products = Spree::Product.where(:id => params[:ids].split(','))
+        else
+          search_params = { :name_cont => params[:q], :sku_cont => params[:q] }
+          @products = Spree::Product.ransack(search_params.merge(:m => 'or')).result
+        end
+      end
     end
   end
 end
