@@ -1,0 +1,3 @@
+<div class="field alpha four columns">
+  <%= collection_select "#{param_prefix}", :preferred_country_id, Spree::Country.order('name ASC').all, :id, :name, { selected: promotion_rule.preferred_country_id } %>
+</div>
