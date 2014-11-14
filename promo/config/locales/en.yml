@@ -72,6 +72,12 @@ en:
   promotions_description: Manage offers and coupons with promotions
   promotion_rule: Promotion Rule
   promotion_rule_types:
+    bill_address_country:
+      name: Bill Address Country
+      description: "Only valid for this country's billing address"
+    ship_address_country:
+      name: Ship Address Country
+      description: "Only valid for this country's shipping address"
     product_exclusion:
       name: Product Exclusion(s)
       description: "Order does not include specified product(s)"
