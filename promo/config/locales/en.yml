@@ -22,11 +22,16 @@ en:
   coupon_code_already_applied: The coupon code has already been applied to this order
   coupon_code_better_exists: The previously applied coupon code results in a better deal
   coupon_code_not_found: The coupon code you entered doesn't exist. Please try again.
-  coupon_code_not_for_preorders: You can't use a free shipping coupon on an order that contains one of the new pre-order items. Please place a separate order for the pre-order items. 
+  coupon_code_not_for_preorders: Oops! The Free Shipping coupon doesn't apply to the new pre-order items in your cart. You will need to place a separate order for the pre-order items. To get the Free Shipping discount on this order 
   coupon_code_max_usage: Coupon code usage limit exceeded
   coupon_code_not_eligible: This coupon code is not eligible for this order
+  product_exclusion_rule_warning: Oops! Your cart contains item(s) that will not work with this promotion. 
+  listed_items: The listed item(s) must be removed before the discount can apply
   editing_promotion: Editing Promotion
   current_promotion_usage: 'Current Usage: %{count}'
+  go_back_to: please go back to the
+  remove_items: and remove the following items
+  shopping_cart: Shopping Cart
   events:
     spree:
       checkout:
