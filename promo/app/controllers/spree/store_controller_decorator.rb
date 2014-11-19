@@ -26,13 +26,16 @@ Spree::StoreController.class_eval do
 
             previous_promo = @order.adjustments.promotion.eligible.first
             fire_event(event_name, :coupon_code => @order.coupon_code)
+            exclusion_rule = promotion.rules.select{|rule| rule.kind_of? Spree::Promotion::Rules::ProductExclusion}.first
             promo = @order.adjustments.promotion.detect { |p| p.originator.promotion.code == @order.coupon_code }
-
             if promo.present? and promo.eligible
               flash[:success] = t(:coupon_code_applied)
               true
             elsif previous_promo.present? and promo.present?
               flash[:error] = t(:coupon_code_better_exists)
+              false
+            elsif exclusion_rule.present? and !exclusion_rule.eligible?(@order)
+              flash["product-exclusion-warning"] = t(:coupon_code_not_for_preorders)
               false
             elsif promo.present?
               flash[:error] = t(:coupon_code_not_eligible)
