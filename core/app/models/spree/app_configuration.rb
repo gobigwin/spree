@@ -15,6 +15,8 @@
 # a.get :color
 # a.preferred_color
 #
+require "spree/core/search/base"
+
 module Spree
   class AppConfiguration < Preferences::Configuration
 
@@ -63,6 +65,7 @@ module Spree
     preference :shipping_instructions, :boolean, :default => false # Request instructions/info for shipping
     preference :show_descendents, :boolean, :default => true
     preference :show_only_complete_orders_by_default, :boolean, :default => true
+    preference :show_raw_product_description, :boolean, :default => false
     preference :show_zero_stock_products, :boolean, :default => true
     preference :show_variant_full_price, :boolean, :default => false #Displays variant full price or difference with product price. Default false to be compatible with older behavior
     preference :show_products_without_price, :boolean, :default => false
