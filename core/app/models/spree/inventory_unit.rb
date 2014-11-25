@@ -46,12 +46,27 @@ module Spree
     # manages both variant.count_on_hand and inventory unit creation
     #
     def self.increase(order, variant, quantity)
-      back_order = determine_backorder(order, variant, quantity)
-      sold = quantity - back_order
-
-      #set on_hand if configured
+      # Adding pessimistic locking, but only if we actually need to update
+      # the inventory.
+      back_order = 0
+      sold = 0
       if self.track_levels?(variant)
-        variant.decrement!(:count_on_hand, quantity)
+        # Grabbing pessimistic lock (which will also reload the model)
+        # If for some reason we decide to get rid of the pessimistic lock
+        # in the future we still need to reload the model here. Otherwise
+        # during Order#finalize! the variant model has the count_on_hand and
+        # lock_version it had BEFORE the payment processing happened. Big
+        # potential for StaleObject errors during heavy site traffic that
+        # leads to big inventory update failures.
+        variant.with_lock do
+          back_order = determine_backorder(order, variant, quantity)
+          sold = quantity - back_order
+
+          variant.decrement!(:count_on_hand, quantity)
+        end
+      else
+        back_order = determine_backorder(order, variant, quantity)
+        sold = quantity - back_order
       end
 
       #create units if configured
@@ -62,7 +77,11 @@ module Spree
 
     def self.decrease(order, variant, quantity)
       if self.track_levels?(variant)
-        variant.increment!(:count_on_hand, quantity)
+        # Grabbing pesssimistic lock, which will alos reload the model. See
+        # other notes about locking in self.increase above.
+        variant.with_lock do
+          variant.increment!(:count_on_hand, quantity)
+        end
       end
 
       if Spree::Config[:create_inventory_units]
