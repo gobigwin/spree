@@ -35,7 +35,7 @@ describe Spree::OrderMailer do
     }.should_not raise_error
   end
 
-  it "cancel_email accepts anorder id as an alternative to an Order object" do
+  it "cancel_email accepts an order id as an alternative to an Order object" do
     Spree::Order.should_receive(:find).with(order.id).and_return(order)
     lambda {
       cancel_email = Spree::OrderMailer.cancel_email(order.id)
