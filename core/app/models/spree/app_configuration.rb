@@ -39,18 +39,22 @@ module Spree
     preference :company, :boolean, :default => false # Request company field for billing and shipping addr
     preference :create_inventory_units, :boolean, :default => true # should only be false when track_inventory_levels is false, also disables RMA's
     preference :currency, :string, :default => "USD"
+    preference :currency_decimal_mark, :string, :default => "."
     preference :currency_symbol_position, :string, :default => "before"
+    preference :currency_thousands_separator, :string, :default => ","
     preference :display_currency, :boolean, :default => false
     preference :default_country_id, :integer
     preference :default_meta_description, :string, :default => 'Spree demo site'
     preference :default_meta_keywords, :string, :default => 'spree, demo'
     preference :default_seo_title, :string, :default => ''
     preference :dismissed_spree_alerts, :string, :default => ''
+    preference :emails_sent_from, :string, :default => 'spree@example.com'
     preference :hide_cents, :boolean, :default => false
     preference :last_check_for_spree_alerts, :string, :default => nil
     preference :layout, :string, :default => 'spree/layouts/spree_application'
     preference :logo, :string, :default => 'admin/bg/spree_50.png'
     preference :max_level_in_taxons_menu, :integer, :default => 1 # maximum nesting level in taxons menu
+    preference :max_quantity, :integer, :default => 1000 # Maximum allowable quantity when checking out
     preference :orders_per_page, :integer, :default => 15
     preference :prices_inc_tax, :boolean, :default => false
     preference :products_per_page, :integer, :default => 12
