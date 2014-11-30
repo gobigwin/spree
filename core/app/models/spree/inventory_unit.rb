@@ -48,8 +48,6 @@ module Spree
     def self.increase(order, variant, quantity)
       # Adding pessimistic locking, but only if we actually need to update
       # the inventory.
-
-      # Defining back_order and sold at top scope
       back_order = 0
       sold = 0
       if self.track_levels?(variant)
@@ -79,7 +77,7 @@ module Spree
 
     def self.decrease(order, variant, quantity)
       if self.track_levels?(variant)
-        # Grabbing pesssimistic lock, which will also reload the model. See
+        # Grabbing pesssimistic lock, which will alos reload the model. See
         # other notes about locking in self.increase above.
         variant.with_lock do
           variant.increment!(:count_on_hand, quantity)
