@@ -46,29 +46,18 @@ module Spree
     # manages both variant.count_on_hand and inventory unit creation
     #
     def self.increase(order, variant, quantity)
-      # Adding pessimistic locking, but only if we actually need to update
-      # the inventory.
+      back_order = determine_backorder(order, variant, quantity)
+      sold = quantity - back_order
 
-      # Defining back_order and sold at top scope
-      back_order = 0
-      sold = 0
+      #set on_hand if configured
       if self.track_levels?(variant)
-        # Grabbing pessimistic lock (which will also reload the model)
-        # If for some reason we decide to get rid of the pessimistic lock
-        # in the future we still need to reload the model here. Otherwise
-        # during Order#finalize! the variant model has the count_on_hand and
-        # lock_version it had BEFORE the payment processing happened. Big
-        # potential for StaleObject errors during heavy site traffic that
-        # leads to big inventory update failures.
-        variant.with_lock do
-          back_order = determine_backorder(order, variant, quantity)
-          sold = quantity - back_order
-
-          variant.decrement!(:count_on_hand, quantity)
-        end
-      else
-        back_order = determine_backorder(order, variant, quantity)
-        sold = quantity - back_order
+        # We don't care about optimistic locking here. It only causes problems
+        # and pessimistic locking causes its own set of problems. So we're going
+        # to turn off locking and execute an atomic SQL update statement
+        original_variant_locking = Spree::Variant.lock_optimistically
+        Spree::Variant.lock_optimistically = false
+        Spree::Variant.update_counters(variant.id, count_on_hand: -quantity)
+        Spree::Variant.lock_optimistically = original_variant_locking
       end
 
       #create units if configured
@@ -79,11 +68,7 @@ module Spree
 
     def self.decrease(order, variant, quantity)
       if self.track_levels?(variant)
-        # Grabbing pesssimistic lock, which will also reload the model. See
-        # other notes about locking in self.increase above.
-        variant.with_lock do
-          variant.increment!(:count_on_hand, quantity)
-        end
+        variant.increment!(:count_on_hand, quantity)
       end
 
       if Spree::Config[:create_inventory_units]
