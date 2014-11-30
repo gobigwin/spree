@@ -51,7 +51,13 @@ module Spree
 
       #set on_hand if configured
       if self.track_levels?(variant)
-        variant.decrement!(:count_on_hand, quantity)
+        # We don't care about optimistic locking here. It only causes problems
+        # and pessimistic locking causes its own set of problems. So we're going
+        # to turn off locking and execute an atomic SQL update statement
+        original_variant_locking = Spree::Variant.lock_optimistically
+        Spree::Variant.lock_optimistically = false
+        Spree::Variant.update_counters(variant.id, count_on_hand: -quantity)
+        Spree::Variant.lock_optimistically = original_variant_locking
       end
 
       #create units if configured
