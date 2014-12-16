@@ -78,6 +78,8 @@ module Spree
               after_transition :to => :canceled, :do => :after_cancel
 
               after_transition :from => :delivery,  :do => :create_shipment!
+              
+              after_transition :to => [:complete, :canceled], :do => :sync_order_with_fulfillment
             end
           end
 
