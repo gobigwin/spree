@@ -17,11 +17,11 @@ module Spree
 
     attr_accessible :quantity, :variant_id
 
-    before_save :update_inventory
+    before_save :update_inventory, :sync_order
     before_destroy :ensure_not_shipped, :remove_inventory
 
     after_save :update_order
-    after_destroy :update_order
+    after_destroy :update_order, :sync_order
 
     def copy_price
       if variant
@@ -117,5 +117,13 @@ module Spree
           errors.add(:quantity, I18n.t('validation.cannot_be_less_than_shipped_units'))
         end
       end
+
+      def sync_order
+        if order.state == "complete" and (quantity_changed? or new_record? or destroyed?)
+          order.sync_order_with_fulfillment
+        end
+      end
+
   end
+
 end
