@@ -41,6 +41,7 @@ module Spree
         app.config.spree.promotions.rules = [
           Spree::Promotion::Rules::ItemTotal,
           Spree::Promotion::Rules::Product,
+          Spree::Promotion::Rules::ProductForCoupon,
           Spree::Promotion::Rules::User,
           Spree::Promotion::Rules::FirstOrder,
           Spree::Promotion::Rules::UserLoggedIn,
