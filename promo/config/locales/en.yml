@@ -96,6 +96,9 @@ en:
     product:
       name: Product(s)
       description: Order includes specified product(s)
+    product_for_coupon:
+      name: Product(s) for Coupon Code
+      description: Order includes specified product(s). Only use for promotions with a coupon code event!
     user:
       name: User
       description: Available only to the specified users
