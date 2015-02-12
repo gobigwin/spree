@@ -58,7 +58,11 @@ module Spree
             Spree::Calculator::FlatRate,
             Spree::Calculator::FlexiRate,
             Spree::Calculator::PerItem,
-            Spree::Calculator::PriceSack]
+            Spree::Calculator::PriceSack,
+            Spree::Calculator::Provident::BestWayDomestic,
+            Spree::Calculator::Provident::NextDayAir,
+            Spree::Calculator::Provident::SecondDayAir,
+            Spree::Calculator::Provident::International]
 
          app.config.spree.calculators.tax_rates = [
             Spree::Calculator::DefaultTax]
