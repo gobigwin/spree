@@ -5,7 +5,7 @@ module Spree
 
     def index
       @searcher = build_searcher(params)
-      @products = @searcher.retrieve_products
+      @products = @searcher.retrieve_products.featured
     end
   end
 end
