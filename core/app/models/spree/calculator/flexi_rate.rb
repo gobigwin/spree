@@ -32,5 +32,9 @@ module Spree
 
       sum
     end
+
+    def carrier_code
+      "BWD"
+    end
   end
 end
