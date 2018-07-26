@@ -14,5 +14,9 @@ module Spree
     def compute(object=nil)
       self.preferred_amount
     end
+
+    def carrier_code
+      "BWD"
+    end
   end
 end
