@@ -26,13 +26,22 @@ Spree::StoreController.class_eval do
 
             previous_promo = @order.adjustments.promotion.eligible.first
             fire_event(event_name, :coupon_code => @order.coupon_code)
+            exclusion_rule = promotion.rules.select{|rule| rule.kind_of? Spree::Promotion::Rules::ProductExclusion}.first
+            exclusion_eligible_products = exclusion_rule.eligible_products.map(&:name) if exclusion_rule.present?
             promo = @order.adjustments.promotion.detect { |p| p.originator.promotion.code == @order.coupon_code }
-
             if promo.present? and promo.eligible
               flash[:success] = t(:coupon_code_applied)
               true
             elsif previous_promo.present? and promo.present?
               flash[:error] = t(:coupon_code_better_exists)
+              false
+            elsif (exclusion_rule.present? and !exclusion_rule.eligible?(@order))
+              items = exclusion_eligible_products && @order.products.map(&:name)
+              if promo.id == 89
+                flash["product-exclusion-preorder-warning"] = "#{t(:coupon_code_not_for_preorders)}, #{t(:go_back_to)} <a href='#{spree.cart_path}'>#{t(:shopping_cart)}</a> #{t(:remove_items)}: #{items.join(', ')}".html_safe
+              else
+                flash["product-exclusion-warning"] = "#{t(:product_exclusion_rule_warning)} #{t(:listed_items)}: #{items.join(', ')}"
+              end
               false
             elsif promo.present?
               flash[:error] = t(:coupon_code_not_eligible)
